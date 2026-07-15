@@ -847,10 +847,84 @@ def _context_summary(user_id, current_message):
 
     return " ".join(previous[:3]).lower()
 
+def _wants_topic_change(message):
+    m = message.lower().strip()
 
+    phrases = [
+        "change topic",
+        "change the topic",
+        "change subject",
+        "change the subject",
+        "something other than this",
+        "something else",
+        "talk about something else",
+        "talk about sm else",
+        "sm else",
+        "different topic",
+        "other than this",
+        "get my mind off this",
+        "get my mind off things"
+    ]
+
+    return any(phrase in m for phrase in phrases)
+
+
+def _casual_chat_response(message):
+    m = message.lower().strip()
+    if "random question" in m:
+          return (
+            "🌸 Okay, random question 😄 "
+            "If you could instantly become ridiculously good at one completely random skill, "
+            "what would you choose?"
+        )
+
+    if "silly hypothetical" in m or "hypothetical" in m:
+        return (
+            "🌸 Okay 😄 Would you rather be able to talk to animals "
+            "or understand every language in the world?"
+        )
+
+    if "movies" in m or "movie" in m:
+        return "🌸 Ooh okay, movies. What's a movie you could rewatch a ridiculous number of times?"
+
+    if "music" in m or "songs" in m or "song" in m:
+        return "🌸 Okay, music 😄 What's one song you've had on repeat lately?"
+
+    if re.search(r"\bhow are (you|u)\b", m):
+        return (
+            "🌸 I'm doing okay — and I'm glad you asked. "
+            "We can absolutely talk about something lighter. "
+            "Want a random question, a silly hypothetical, movies, music, "
+            "or just normal conversation?"
+        )
+
+    if m in {
+        "hi", "hey", "hello", "hii", "heyy",
+        "hi serene", "hey serene", "hello serene"
+    }:
+        return "🌸 Hey :) I'm here. What do you feel like talking about?"
+
+    return None
 def smart_override(msg, user_id):
     """Deterministic current-message-first conversation router."""
     m = msg.lower().strip()
+
+    # Explicit topic changes override old emotional context.
+    if _wants_topic_change(msg):
+        SESSION_MEMORY[user_id] = []
+
+        return (
+            "🌸 Of course. We can leave that topic here — no more exam talk. "
+            "Let's talk about something completely different. "
+            "Want a random question, a silly hypothetical, movies, music, "
+            "or just normal conversation?"
+        )
+
+    casual_reply = _casual_chat_response(msg)
+
+    if casual_reply:
+        return casual_reply
+
     topic = _active_session_topic(user_id, msg)
     context = _context_summary(user_id, msg)
     last_reply = get_session_last_bot_reply(user_id).lower()
