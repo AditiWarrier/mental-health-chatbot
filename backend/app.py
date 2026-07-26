@@ -87,7 +87,7 @@ def get_last_bot_reply(user_id):
     except Exception:
         return ""
 
-def get_recent_context(user_id, limit=8):
+def get_recent_context(user_id, limit=4):
     """Get recent conversation context"""
     try:
         context = (Conversation.query
@@ -98,6 +98,50 @@ def get_recent_context(user_id, limit=8):
         return "\n".join([c.text for c in context])
     except Exception:
         return ""
+
+def retrieve_conversation_memories(user_message, user_id, k=3):
+    """
+    Retrieve the most relevant previous user messages.
+    """
+
+    try:
+        previous_messages = (
+            Conversation.query
+            .filter_by(user_id=user_id, role="user")
+            .all()
+        )
+
+        scored = []
+
+        query_words = set(
+            re.findall(r"\w+", user_message.lower())
+        )
+
+        for msg in previous_messages:
+
+            text = msg.text.lower()
+
+            score = 0
+
+            # Keyword overlap
+            score += len(query_words.intersection(text.split()))
+
+            # Semantic similarity
+            score += SequenceMatcher(
+                None,
+                user_message.lower(),
+                text
+            ).ratio()
+
+            if score > 0:
+                scored.append((score, msg.text))
+
+        scored.sort(reverse=True)
+
+        return [m for _, m in scored[:k]]
+
+    except Exception:
+        return []
 
 def retrieve_relevant_knowledge(user_message, user_id, k=3):
     """Retrieve top-k most relevant knowledge lines with context awareness"""
@@ -183,34 +227,62 @@ def generate_model_response(user_message, user_id):
     """Generate response using local Ollama model"""
 
     try:
-        # Get recent conversation context
-        context = get_recent_context(user_id, 8)
+        # Get recent conversation (reduced for faster responses)
+        context = get_recent_context(user_id, limit=4)
 
-        # Retrieve relevant knowledge
+        # Retrieve only the top 2 knowledge snippets
         relevant_knowledge = retrieve_relevant_knowledge(
             user_message,
             user_id,
-            k=3
+            k=2
         )
 
         knowledge_context = "\n".join(relevant_knowledge)
+        memory_context = "\n".join(
+    retrieve_conversation_memories(
+        user_message,
+        user_id,
+        k=3
+    )
+)
 
         prompt = f"""
-You are Serene, a warm, calm and empathetic mental health support companion.
+You are Serene, a warm, kind, emotionally intelligent friend.
 
-You are NOT a therapist.
-Do not diagnose.
-Do not lecture.
-Keep responses natural, supportive and conversational.
+Your goal is to make the user feel heard, understood, and comfortable.
 
-Relevant emotional context:
+Rules:
+- Reply in ONLY 2–4 sentences.
+- Keep replies under 80 words unless the user asks for more.
+- Sound like a caring friend, NOT a therapist.
+- Never lecture.
+- Avoid long explanations.
+- Give at most ONE suggestion.
+- Ask at most ONE question.
+- Don't repeatedly say things like "I understand" or "That sounds difficult."
+- Be warm, natural, and conversational.
+- If the user changes topics, follow naturally.
+- If the user asks for something fun or random, respond playfully.
+- Show empathy first, advice second.
+- If relevant memories are provided, use them naturally.
+- Do not say you cannot remember something unless it is not in the provided memories.
+
+Relevant context:
 {knowledge_context}
 
-Conversation so far:
+Relevant memories from previous conversations:
+{memory_context}
+
+Recent conversation:
 {context}
 
 User:
 {user_message}
+
+Remember:
+- Keep this response short.
+- Continue the conversation naturally.
+- Do not exceed 80 words.
 
 Serene:
 """
@@ -222,7 +294,8 @@ Serene:
                 "prompt": prompt,
                 "stream": False,
                 "options": {
-                    "temperature": 0.7
+                    "temperature": 0.6,
+                    "num_predict": 120
                 }
             },
             timeout=60
@@ -233,21 +306,13 @@ Serene:
             return None
 
         data = response.json()
-
-        print("OLLAMA RAW RESPONSE:")
-        print(data)
-
         reply = data.get("response", "").strip()
-
-        print("SERENE REPLY:")
-        print(reply)
 
         return reply
 
     except Exception as e:
         print("OLLAMA ERROR:", e)
         return None
-
 # -------------------------
 # SMART LOGIC (FIXED)
 # -------------------------
@@ -403,7 +468,7 @@ def get_bot_response():
     )
     db.session.commit()
 
-    print("FINAL REPLY:", repr(reply))
+    
 
     return reply
 
