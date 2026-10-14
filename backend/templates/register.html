@@ -3,22 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <title>Register</title>
-<style>
-body { font-family: Arial; display:flex; justify-content:center; align-items:center; height:100vh; background:#ffeef5; }
-form { display:flex; flex-direction:column; background:white; padding:30px; border-radius:12px; }
-input { margin-bottom:10px; padding:8px; border-radius:6px; border:1px solid #ccc; }
-button { padding:8px; border:none; background:#ff99cc; color:white; border-radius:6px; cursor:pointer; }
-button:hover { background:#ff66b2; }
-a { margin-top:10px; text-align:center; text-decoration:none; color:#ff66b2; }
-</style>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<form method="POST">
-<h2>Register</h2>
+<div class="auth-container">
+<div class="auth-wrapper">
+<div class="auth-visual">
+<div class="brand-icon">✿</div>
+<h1 class="brand-name">Magpie</h1>
+<p class="brand-tagline">A little space to breathe</p>
+</div>
+<div class="auth-form-container">
+<form method="POST" class="auth-form">
+<h2>Create account</h2>
 <input type="text" name="username" placeholder="Username" required>
 <input type="password" name="password" placeholder="Password" required>
 <button type="submit">Register</button>
-<a href="/login">Login</a>
+<a href="/login">Already have an account?</a>
 </form>
+</div>
+</div>
+</div>
 </body>
 </html>

@@ -1,39 +1,232 @@
-/* General Body */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #ffeef5; /* soft baby pink */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+/* ============================================
+   SERENE — PREMIUM WELLNESS CHATBOT DESIGN
+   ============================================ */
+
+/* Typography System */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Color Palette */
+    --color-ivory: #FFFAF7;
+    --color-powder-pink: #F8DCE6;
+    --color-pale-blush: #FCEEF2;
+    --color-rose: #D985A5;
+    --color-muted-berry: #A85F7E;
+    --color-dusty-mauve: #806875;
+    --color-text-primary: #433640;
+    --color-text-secondary: #806875;
+    --color-border: #F0DFE5;
+    --color-white: #FFFFFF;
+    
+    /* Spacing System */
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-2xl: 32px;
+    
+    /* Shadows */
+    --shadow-subtle: 0 2px 8px rgba(67, 54, 64, 0.04);
+    --shadow-soft: 0 4px 16px rgba(67, 54, 64, 0.06);
+    --shadow-medium: 0 8px 24px rgba(67, 54, 64, 0.08);
+    --shadow-elevated: 0 12px 32px rgba(67, 54, 64, 0.1);
 }
 
-/* Chat Container */
-.chat-container {
-    width: 450px;
-    max-width: 90%;
-    height: 600px;
-    background: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+/* Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, var(--color-ivory) 0%, var(--color-pale-blush) 100%);
+    color: var(--color-text-primary);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* ============================================
+   APP CONTAINER & HEADER
+   ============================================ */
+
+.app-container {
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-lg);
+    position: relative;
     overflow: hidden;
 }
 
-/* Chat Box */
-.chat-box {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    background-color: #fff5fa; /* light pink for chat area */
+/* Botanical Decorations */
+.botanical-left,
+.botanical-right {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 280px;
+    pointer-events: none;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Message Bubbles */
-.message {
-    margin: 8px 0;
+.botanical-left {
+    left: 0;
+}
+
+.botanical-right {
+    right: 0;
+}
+
+.botanical-svg {
+    width: 100%;
+    height: 100%;
+    max-width: 250px;
+    max-height: 800px;
+    opacity: 1;
+}
+
+.app-header {
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg) var(--space-xl);
+    margin-bottom: var(--space-lg);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--color-border);
+    position: relative;
+    z-index: 1;
+}
+
+.chat-container {
+    flex: 1;
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-medium);
+    border: 1px solid var(--color-border);
     display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: calc(100vh - 200px);
+    position: relative;
+    z-index: 1;
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-sm);
+}
+
+.brand-icon {
+    font-size: 2rem;
+    color: var(--color-rose);
+    line-height: 1;
+}
+
+.brand-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.brand-tagline {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin: 0;
+    letter-spacing: 0.02em;
+}
+
+/* ============================================
+   CHAT CONTAINER
+   ============================================ */
+
+.chat-container {
+    flex: 1;
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-medium);
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: calc(100vh - 200px);
+}
+
+/* ============================================
+   CHAT BOX
+   ============================================ */
+
+.chat-box {
+    flex: 1;
+    padding: var(--space-lg);
+    overflow-y: auto;
+    background: var(--color-ivory);
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+.chat-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-box::-webkit-scrollbar-track {
+    background: var(--color-pale-blush);
+    border-radius: 3px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+    background: var(--color-rose);
+    border-radius: 3px;
+}
+
+.chat-box::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted-berry);
+}
+
+/* ============================================
+   MESSAGE BUBBLES
+   ============================================ */
+
+.message {
+    margin: var(--space-md) 0;
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .message.user {
@@ -44,51 +237,349 @@ body {
     justify-content: flex-start;
 }
 
-/* Bubble Styling */
 .bubble {
     max-width: 70%;
-    padding: 10px 15px;
-    border-radius: 18px;
-    background-color: #f9dff1; /* default bot bubble */
-    color: #333;
-    line-height: 1.4;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-lg);
+    line-height: 1.6;
     word-wrap: break-word;
     white-space: pre-wrap;
+    font-size: 0.95rem;
+    box-shadow: var(--shadow-subtle);
+    transition: transform 0.2s ease;
 }
 
+.bubble:hover {
+    transform: translateY(-1px);
+}
+
+/* Bot Bubbles */
+.message.bot .bubble {
+    background: var(--color-white);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-bottom-left-radius: var(--radius-sm);
+}
+
+/* User Bubbles */
 .message.user .bubble {
-    background-color: #d1f7c4; /* green for user */
-    color: #333;
+    background: linear-gradient(135deg, var(--color-powder-pink) 0%, var(--color-rose) 100%);
+    color: var(--color-white);
+    border: none;
+    border-bottom-right-radius: var(--radius-sm);
+    box-shadow: 0 4px 12px rgba(216, 133, 165, 0.25);
 }
 
-/* Input Box */
+/* ============================================
+   INPUT BOX
+   ============================================ */
+
 .input-box {
     display: flex;
-    padding: 12px;
-    border-top: 1px solid #ddd;
-    background-color: #fff5fa;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    background: var(--color-white);
+    border-top: 1px solid var(--color-border);
 }
 
 input[type="text"] {
     flex: 1;
-    padding: 10px 15px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-2xl);
+    border: 2px solid var(--color-border);
+    background: var(--color-ivory);
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    font-family: inherit;
     outline: none;
-    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]::placeholder {
+    color: var(--color-text-secondary);
+}
+
+input[type="text"]:focus {
+    border-color: var(--color-rose);
+    background: var(--color-white);
+    box-shadow: 0 0 0 4px rgba(216, 133, 165, 0.1);
 }
 
 button {
-    margin-left: 10px;
-    padding: 10px 16px;
+    padding: var(--space-md) var(--space-xl);
     border: none;
-    background: #ff99cc;
-    color: white;
-    border-radius: 20px;
+    background: linear-gradient(135deg, var(--color-rose) 0%, var(--color-muted-berry) 100%);
+    color: var(--color-white);
+    border-radius: var(--radius-2xl);
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(168, 95, 126, 0.25);
+    white-space: nowrap;
 }
 
 button:hover {
-    background: #ff66b2;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(168, 95, 126, 0.35);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(168, 95, 126, 0.25);
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(216, 133, 165, 0.2);
+}
+
+/* ============================================
+   AUTH PAGES — SPLIT COMPOSITION
+   ============================================ */
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--color-ivory) 0%, var(--color-pale-blush) 100%);
+    padding: var(--space-lg);
+}
+
+.auth-wrapper {
+    display: flex;
+    background: var(--color-white);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-elevated);
+    overflow: hidden;
+    max-width: 900px;
+    width: 100%;
+    min-height: 500px;
+}
+
+.auth-visual {
+    flex: 1;
+    background: linear-gradient(135deg, var(--color-powder-pink) 0%, var(--color-rose) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-2xl);
+    color: var(--color-white);
+    text-align: center;
+}
+
+.auth-visual .brand-icon {
+    font-size: 4rem;
+    margin-bottom: var(--space-lg);
+}
+
+.auth-visual .brand-name {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-sm);
+}
+
+.auth-visual .brand-tagline {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.auth-form-container {
+    flex: 1;
+    padding: var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.auth-form h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-xl) 0;
+    letter-spacing: -0.02em;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="password"] {
+    width: 100%;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--color-border);
+    background: var(--color-ivory);
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+    margin-bottom: var(--space-md);
+    transition: all 0.3s ease;
+}
+
+.auth-form input[type="text"]::placeholder,
+.auth-form input[type="password"]::placeholder {
+    color: var(--color-text-secondary);
+}
+
+.auth-form input[type="text"]:focus,
+.auth-form input[type="password"]:focus {
+    border-color: var(--color-rose);
+    background: var(--color-white);
+    box-shadow: 0 0 0 4px rgba(216, 133, 165, 0.1);
+}
+
+.auth-form button {
+    width: 100%;
+    padding: var(--space-md);
+    margin-top: var(--space-sm);
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--color-rose) 0%, var(--color-muted-berry) 100%);
+    color: var(--color-white);
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(168, 95, 126, 0.25);
+}
+
+.auth-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(168, 95, 126, 0.35);
+}
+
+.auth-form button:active {
+    transform: translateY(0);
+}
+
+.auth-form a {
+    margin-top: var(--space-lg);
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-rose);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.auth-form a:hover {
+    color: var(--color-muted-berry);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .app-container {
+        padding: var(--space-md);
+    }
+    
+    /* Hide botanical decorations on smaller screens */
+    .botanical-left,
+    .botanical-right {
+        display: none;
+    }
+    
+    .app-header {
+        padding: var(--space-md) var(--space-lg);
+        margin-bottom: var(--space-md);
+    }
+    
+    .brand-name {
+        font-size: 1.5rem;
+    }
+    
+    .brand-tagline {
+        font-size: 0.9rem;
+    }
+    
+    .chat-container {
+        max-height: calc(100vh - 160px);
+    }
+    
+    .bubble {
+        max-width: 80%;
+        padding: var(--space-sm) var(--space-md);
+        font-size: 0.9rem;
+    }
+    
+    .input-box {
+        padding: var(--space-md);
+    }
+    
+    input[type="text"] {
+        padding: var(--space-sm) var(--space-md);
+        font-size: 0.9rem;
+    }
+    
+    button {
+        padding: var(--space-sm) var(--space-lg);
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .auth-wrapper {
+        flex-direction: column;
+        min-height: auto;
+    }
+    
+    .auth-visual {
+        padding: var(--space-xl);
+        min-height: 200px;
+    }
+    
+    .auth-visual .brand-icon {
+        font-size: 3rem;
+    }
+    
+    .auth-visual .brand-name {
+        font-size: 2rem;
+    }
+    
+    .auth-form-container {
+        padding: var(--space-xl);
+    }
+    
+    .auth-form {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-container {
+        padding: var(--space-sm);
+    }
+    
+    .chat-container {
+        border-radius: var(--radius-lg);
+        max-height: calc(100vh - 140px);
+    }
+    
+    .bubble {
+        max-width: 85%;
+    }
+    
+    .input-box {
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+    
+    button {
+        width: 100%;
+    }
+    
+    .auth-wrapper {
+        border-radius: var(--radius-lg);
+    }
 }
