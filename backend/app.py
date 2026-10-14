@@ -375,7 +375,7 @@ def fallback_response(msg, user_id):
 # -------------------------
 SAFETY_KEYWORDS = ["suicide", "kill myself", "i want to die"]
 
-SAFETY_RESPONSE = "🌸 I'm really sorry you're feeling this way. Please call 112."
+SAFETY_RESPONSE = "🌸 You're not alone, and you don't have to face this by yourself. I'm really sorry you're hurting. If you're in immediate danger, please call 112 in India or reach out to someone you trust who can stay with you. You deserve support and care."
 
 # -------------------------
 # ROUTES
